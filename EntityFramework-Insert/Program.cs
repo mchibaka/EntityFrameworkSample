@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,15 +13,68 @@ namespace EntityFramework_Insert
         static void Main(string[] args)
         {
             //TRADITIONAL CRUD
+            /*
             InsertRecordSample(); //C
             ReadRecordSample();   //R
             UpdateRecordSample(); //U
             DeleteRecordSample(); //D
-            
+            */
+
             //ENTITY FRAMEWORK
-
-
+            //InsertRecordWithEF();
+            //ReadRecordWithEF();
+            //UpdateRecordWithEF();
+            //DeleteRecordWithEF();
         }
+
+        #region Entity Framework
+        private static void DeleteRecordWithEF()
+        {
+            var db = new SampleDatabaseEntities();
+            User user = db.Users.Find("mchibaka");
+            db.Users.Remove(user);
+            db.SaveChanges();
+            Console.WriteLine("Delete with EF successful!");
+        }
+
+        private static void UpdateRecordWithEF()
+        {
+            var db = new SampleDatabaseEntities();
+            User user = db.Users.First();
+            user.Gender = "F";
+            user.Surname = "Chirwa";
+            db.SaveChanges();
+            Console.WriteLine("Update with EF successful!");
+        }
+
+        private static void ReadRecordWithEF()
+        {
+            var db = new SampleDatabaseEntities();
+            User user = db.Users.Find("mchibaka");
+            Console.WriteLine("Firstname : " + user.Firstname);
+            Console.WriteLine("Surname : " + user.Surname);
+            Console.WriteLine("Read record with EF!");
+        }
+
+        private static void InsertRecordWithEF()
+        {
+            User user = new User()
+            {
+                Username = "mchibaka",
+                DateOfBirth = DateTime.Now,
+                Firstname = "Mike",
+                Gender = "M",
+                Password = "password123!",
+                Remarks = "Test Remarks",
+                Surname = "Chibaka"
+            };
+            var db = new SampleDatabaseEntities();
+            db.Users.Add(user);
+            db.SaveChanges();
+            Console.WriteLine("Insert record with EF successful!");
+        }
+        #endregion
+
 
         #region TraditionalCRUD
 
